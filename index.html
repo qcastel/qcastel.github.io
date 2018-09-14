@@ -469,6 +469,10 @@ It will show you the basic Open Banking flow:</p>
 <div class="paragraph">
 <p>This sample is based on the ForgeRock OBRI but can easily be integrated with other ASPSPs.</p>
 </div>
+<div class="paragraph">
+<p>We built this app to show you what looks like a base for a TPP application but also give you a taste on what is Open Banking.
+For some of you that are new in Open Banking, it&#8217;s probably the best way to setup your mind and see if it&#8217;s something you would like to get more involved in.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -497,58 +501,51 @@ with the external service needs to provide what we call a client certificate. It
 except that it is used for authenticating the client app, for us, the TPP app.</p>
 </div>
 <div class="paragraph">
-<p>To get this client certificate setup, you need:</p>
+<p>To get this client certificate setup, you need to:</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>register on the ForgeRock directory <a href="https://directory.integ-ob.forgerock.financial" class="bare">https://directory.integ-ob.forgerock.financial</a></p>
+<p>Register on the ForgeRock directory <a href="https://directory.ob.forgerock.financial" class="bare">https://directory.ob.forgerock.financial</a></p>
 </li>
 <li>
-<p>login to the directory</p>
+<p>Login to the directory</p>
 </li>
 <li>
-<p>create a software statement</p>
+<p>Create a software statement</p>
 </li>
 <li>
-<p>name your software statement</p>
+<p>Name your software statement</p>
 </li>
 <li>
-<p>as you are here, set the redirect uris to :</p>
+<p>Set the redirect uris to :</p>
 <div class="ulist">
 <ul>
 <li>
 <p><a href="https://localhost" class="bare">https://localhost</a></p>
 </li>
 <li>
-<p><a href="https://tpp.example.com:8080/web/exchange_code/aisp" class="bare">https://tpp.example.com:8080/web/exchange_code/aisp</a></p>
+<p><a href="https://localhost:8080/web/exchange_code/aisp" class="bare">https://localhost:8080/web/exchange_code/aisp</a></p>
 </li>
 <li>
-<p><a href="https://tpp.example.com:8080/web/exchange_code/pisp" class="bare">https://tpp.example.com:8080/web/exchange_code/pisp</a></p>
+<p><a href="https://localhost:8080/web/exchange_code/pisp" class="bare">https://localhost:8080/web/exchange_code/pisp</a></p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>go to the keys tab and download the latest transport key in .pem and .key formats</p>
+<p>Go to the <code>Transport/Signing/Encryption keys</code> tab and scroll to the bottom</p>
 </li>
 <li>
-<p>save then in the folder keys/ and rename the corresponding files by:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>transport.pem</p>
+<p>Download the transport keys in .pem and .key formats by going to the <code>Actions</code> column</p>
 </li>
 <li>
-<p>transport.key</p>
-</li>
-</ul>
-</div>
+<p>Save them in the top level of the project folder</p>
 </li>
 <li>
-<p>run the bash script <code>importDirectoryKey.sh</code> which will load those keys into the java keystore of the app</p>
+<p>Run the bash script <code>importDirectoryKey.sh</code> which will load those keys into the java keystore of the app</p>
 </li>
-</ul>
+</ol>
 </div>
 <div class="paragraph">
 <p>You are now ready to run the application!</p>
@@ -559,10 +556,10 @@ except that it is used for authenticating the client app, for us, the TPP app.</
 <h2 id="_compiling_the_app">Compiling the app</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Run the usual <code>mvn clean install</code>
-You will see that it runs the functional tests. Feel free to explore them!
-Bear in mind that the functional tests expect your software statement to not been on-board yet. Make sure that&#8217;s the case.
-By default, if you just created the software statement, it would be the case</p>
+<p>Run <code>mvn clean install</code></p>
+</div>
+<div class="paragraph">
+<p>You will see that it runs the functional tests. Feel free to explore them!</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -586,7 +583,7 @@ The functional tests uses Selenium, to simulate the PSU interaction.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://tpp.example.com:8080/api/hello-world/' -i -X GET</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://localhost:8080/api/hello-world/' -i -X GET</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -611,10 +608,10 @@ Hello World!</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://tpp.example.com:7777/api/registration/aspsp' -i -X POST \
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://localhost:7777/api/registration/aspsp' -i -X POST \
     -H 'financial_id: 0015800001041REAAY' \
-    -H 'as_discovery_endpoint: https://as.aspsp.integ-ob.forgerock.financial/oauth2/' \
-    -H 'rs_discovery_endpoint: https://rs.aspsp.integ-ob.forgerock.financial/open-banking/discovery'</code></pre>
+    -H 'as_discovery_endpoint: https://as.aspsp.ob.forgerock.financial/oauth2/' \
+    -H 'rs_discovery_endpoint: https://rs.aspsp.ob.forgerock.financial/open-banking/discovery'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -624,9 +621,9 @@ Hello World!</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=utf-8
-Content-Length: 33
+Content-Length: 45
 
-{"id":"5b82f85667ca1c08cffcfb04"}</code></pre>
+{"id":"f58eb6b5-42b8-4502-9e4a-4013abb1e69d"}</code></pre>
 </div>
 </div>
 </div>
@@ -642,8 +639,8 @@ Content-Length: 33
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://tpp.example.com:8080/api/open-banking/payment-requests/initiate' -i -X POST \
-    -d 'aspspId=5b82f82a67ca1c08cffcfaff'</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://localhost:8080/api/open-banking/payment-requests/initiate' -i -X POST \
+    -d 'aspspId=3959e194-d649-4310-b151-8d15b96ca86c'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -653,9 +650,9 @@ Content-Length: 33
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 302 Found
 Content-Type: text/plain;charset=UTF-8
-Content-Length: 1687
+Content-Length: 1673
 
-https://matls.as.aspsp.integ-ob.forgerock.financial/oauth2/realms/root/realms/openbanking/authorize?response_type=code%20id_token&amp;client_id=40f4ae0b-99bc-4363-9486-abaca90c76ba&amp;state=5b82f82b67ca1c08cffcfb00&amp;nonce=5b82f82b67ca1c08cffcfb00&amp;scope=accounts%20openid%20payments&amp;redirect_uri=https://localhost&amp;request=eyJraWQiOiIyZGVjNjY3Yi0wMjVjLTQ5NGEtYjgxZS03MGYzYmI4YWRlMGQiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwczpcL1wvbWF0bHMuYXMuYXNwc3AuaW50ZWctb2IuZm9yZ2Vyb2NrLmZpbmFuY2lhbFwvb2F1dGgyXC9vcGVuYmFua2luZyIsInNjb3BlIjoiYWNjb3VudHMgb3BlbmlkIHBheW1lbnRzIiwiY2xhaW1zIjp7ImlkX3Rva2VuIjp7ImFjciI6eyJ2YWx1ZSI6InVybjpvcGVuYmFua2luZzpwc2QyOnNjYSIsImVzc2VudGlhbCI6dHJ1ZX0sIm9wZW5iYW5raW5nX2ludGVudF9pZCI6eyJ2YWx1ZSI6IlAyMjE4MmNjMy05NDkwLTRkZDgtOTJkNS0wZWMxOTcxMmE3ZTYiLCJlc3NlbnRpYWwiOnRydWV9fSwidXNlcmluZm8iOnsib3BlbmJhbmtpbmdfaW50ZW50X2lkIjp7InZhbHVlIjoiUDIyMTgyY2MzLTk0OTAtNGRkOC05MmQ1LTBlYzE5NzEyYTdlNiIsImVzc2VudGlhbCI6dHJ1ZX19fSwiaXNzIjoiNDBmNGFlMGItOTliYy00MzYzLTk0ODYtYWJhY2E5MGM3NmJhIiwicmVzcG9uc2VfdHlwZSI6ImNvZGUgaWRfdG9rZW4iLCJyZWRpcmVjdF91cmkiOiJodHRwczpcL1wvbG9jYWxob3N0Iiwic3RhdGUiOiI1YjgyZjgyYjY3Y2ExYzA4Y2ZmY2ZiMDAiLCJleHAiOjE1MzUzMTM0NzEsIm5vbmNlIjoiNWI4MmY4MmI2N2NhMWMwOGNmZmNmYjAwIiwiaWF0IjoxNTM1MzA5ODcyLCJjbGllbnRfaWQiOiI0MGY0YWUwYi05OWJjLTQzNjMtOTQ4Ni1hYmFjYTkwYzc2YmEiLCJqdGkiOiI5MjU5ZTEyNS1mN2QwLTRjMGItOWI5Ny1hYmE2NjdhN2Y5ZDAifQ.Ygtu0MBs5XCiD2HkoWnPSY9aT1f3jnwsK_o9oYAWaAcYEJ7cGaS8PtmZ0Mn5inKHF1e5NP2YOao2EhUbVwjyXodvRWKJwnhcdusvf-yeklEw8f1HCsM1Rxca04yL2YYcQ4xeIzuS9KOVYzQPpIpmJb5xcAnijW-9YAR9OPpoVaaXrevF8q0_QGnLORVj3SUbeFkcLfQDzNoiVj7ft1TwFTY-Rn0SMp4du6_LwxTZ2tk8ihEj-7St8A50Gjv0dnoW8-qUBO9qYwN0T08GlhQPcnLSGBOlQJHJWSS878sMZg313vJXmIYMP-1eBCU_nNE0HX1aicyozrXpdWQjmn3sQQ</code></pre>
+https://matls.as.aspsp.ob.forgerock.financial/oauth2/realms/root/realms/openbanking/authorize?response_type=code%20id_token&amp;client_id=3959e194-d649-4310-b151-8d15b96ca86c&amp;state=5b9bbfd7c181f157661a7934&amp;nonce=5b9bbfd7c181f157661a7934&amp;scope=accounts%20openid%20payments&amp;redirect_uri=https://localhost&amp;request=eyJraWQiOiJlNTRjNjVjZC0wNjJkLTQ5NTgtOTEwZC1lODk2Y2E1ZWQ0YjMiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwczpcL1wvbWF0bHMuYXMuYXNwc3Aub2IuZm9yZ2Vyb2NrLmZpbmFuY2lhbFwvb2F1dGgyXC9vcGVuYmFua2luZyIsInNjb3BlIjoiYWNjb3VudHMgb3BlbmlkIHBheW1lbnRzIiwiY2xhaW1zIjp7ImlkX3Rva2VuIjp7ImFjciI6eyJ2YWx1ZSI6InVybjpvcGVuYmFua2luZzpwc2QyOnNjYSIsImVzc2VudGlhbCI6dHJ1ZX0sIm9wZW5iYW5raW5nX2ludGVudF9pZCI6eyJ2YWx1ZSI6IlA3NjBjNGIwZC0wYTZhLTQwMjUtYTA4Mi03YWRkZmNmYmJiMTEiLCJlc3NlbnRpYWwiOnRydWV9fSwidXNlcmluZm8iOnsib3BlbmJhbmtpbmdfaW50ZW50X2lkIjp7InZhbHVlIjoiUDc2MGM0YjBkLTBhNmEtNDAyNS1hMDgyLTdhZGRmY2ZiYmIxMSIsImVzc2VudGlhbCI6dHJ1ZX19fSwiaXNzIjoiMzk1OWUxOTQtZDY0OS00MzEwLWIxNTEtOGQxNWI5NmNhODZjIiwicmVzcG9uc2VfdHlwZSI6ImNvZGUgaWRfdG9rZW4iLCJyZWRpcmVjdF91cmkiOiJodHRwczpcL1wvbG9jYWxob3N0Iiwic3RhdGUiOiI1YjliYmZkN2MxODFmMTU3NjYxYTc5MzQiLCJleHAiOjE1MzY5Mzc0NDgsIm5vbmNlIjoiNWI5YmJmZDdjMTgxZjE1NzY2MWE3OTM0IiwiaWF0IjoxNTM2OTMzODQ4LCJjbGllbnRfaWQiOiIzOTU5ZTE5NC1kNjQ5LTQzMTAtYjE1MS04ZDE1Yjk2Y2E4NmMiLCJqdGkiOiJmOWViOTY1OC1kYmRmLTRkMzUtOTA1Zi1lMDRkMjYxNTZhZjYifQ.CjWGti76RMVAP2tC8OfHNOI-zd7EnXgtoRLZprBdZnX51bvT-jJW2eEiSrFNapRzyEvW8_4KuNQOongEZrDJhYl9KgIjhgB7sdg5Njde6MCxiunEOH5MMviF3p6rMUIzK3WJcI9GEWJmU47K1Jfbal2QfQHg-erbBUItt44ye3NsLD8sexC9claa6KljimiuGjMj0Hq1SOM_qQAVmU0htQ-XWVJvuTIpESNVQqKG3pDlY98q-EL45HiMS6Frf5RfvvZHXtgJyRpvzVgZUEcuaVEw4wni4QTo4pbaIEAIPjZOFwk67y3MRkY3kl4HgWlbqDuGL52FdhUNdWYKBkGLxw</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -666,7 +663,7 @@ Don&#8217;t worry, this happen automatically</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://tpp.example.com:8080/api/open-banking/payment-requests/exchange_code?code=d79d753c-06c6-403c-93a0-8b452cfbb040&amp;scope=openid+payments+accounts&amp;id_token=eyJ0eXAiOiJKV1QiLCJraWQiOiJGb2w3SXBkS2VMWm16S3RDRWdpMUxEaFNJek09IiwiYWxnIjoiRVMyNTYifQ.eyJzdWIiOiJkZW1vIiwiYXVkaXRUcmFja2luZ0lkIjoiM2M2NTAzNTgtZGE4ZC00OTJkLTlmZWUtNDgwYzMxNDVhM2ZkLTI0MDQ2OTciLCJpc3MiOiJodHRwczovL21hdGxzLmFzLmFzcHNwLmludGVnLW9iLmZvcmdlcm9jay5maW5hbmNpYWwvb2F1dGgyL29wZW5iYW5raW5nIiwidG9rZW5OYW1lIjoiaWRfdG9rZW4iLCJub25jZSI6IjViODJmODJiNjdjYTFjMDhjZmZjZmIwMCIsImFjciI6InVybjpvcGVuYmFua2luZzpwc2QyOnNjYSIsImF1ZCI6IjQwZjRhZTBiLTk5YmMtNDM2My05NDg2LWFiYWNhOTBjNzZiYSIsImNfaGFzaCI6ImJwSGRacjNVS3c0czREVHNkakpFQ0EiLCJvcGVuYmFua2luZ19pbnRlbnRfaWQiOiJQMjIxODJjYzMtOTQ5MC00ZGQ4LTkyZDUtMGVjMTk3MTJhN2U2Iiwic19oYXNoIjoieWdIZnFIbXJoZGxCSENrSlJ0d0ZrQSIsImF6cCI6IjQwZjRhZTBiLTk5YmMtNDM2My05NDg2LWFiYWNhOTBjNzZiYSIsImF1dGhfdGltZSI6MTUzNTMwOTg4MCwicmVhbG0iOiIvb3BlbmJhbmtpbmciLCJleHAiOjE1MzUzMTM0ODQsInRva2VuVHlwZSI6IkpXVFRva2VuIiwiaWF0IjoxNTM1MzA5ODg0fQ.EFpASWSdfmabZ1ngKhx5QUu2XiQwVOM09S63tnZXBPokzuxHb-RRvfz6XtaE0VUWSt7b9X6NujcvMnYY19PsqQ&amp;state=5b82f82b67ca1c08cffcfb00' -i -X GET</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ curl 'https://localhost:8080/api/open-banking/payment-requests/exchange_code?code=b57bbe0b-63aa-412a-88f0-25f283fcfb9e&amp;scope=openid+payments+accounts&amp;id_token=eyJ0eXAiOiJKV1QiLCJraWQiOiJGb2w3SXBkS2VMWm16S3RDRWdpMUxEaFNJek09IiwiYWxnIjoiRVMyNTYifQ.eyJzdWIiOiJkZW1vIiwiYXVkaXRUcmFja2luZ0lkIjoiMDkwMWVjYWYtYTAwOC00NTcyLThkODQtMzBiZGZjNDU0YzE2LTU4NzM2MjEiLCJpc3MiOiJodHRwczovL21hdGxzLmFzLmFzcHNwLm9iLmZvcmdlcm9jay5maW5hbmNpYWwvb2F1dGgyL29wZW5iYW5raW5nIiwidG9rZW5OYW1lIjoiaWRfdG9rZW4iLCJub25jZSI6IjViOWJiZmQ3YzE4MWYxNTc2NjFhNzkzNCIsImFjciI6InVybjpvcGVuYmFua2luZzpwc2QyOnNjYSIsImF1ZCI6IjM5NTllMTk0LWQ2NDktNDMxMC1iMTUxLThkMTViOTZjYTg2YyIsImNfaGFzaCI6IlFubDduZnI3bE15THZFVGJrUWgxaHciLCJvcGVuYmFua2luZ19pbnRlbnRfaWQiOiJQNzYwYzRiMGQtMGE2YS00MDI1LWEwODItN2FkZGZjZmJiYjExIiwic19oYXNoIjoiTVp6c2NyV2ozdE4ybmx3eXhINXlydyIsImF6cCI6IjM5NTllMTk0LWQ2NDktNDMxMC1iMTUxLThkMTViOTZjYTg2YyIsImF1dGhfdGltZSI6MTUzNjkzMzg1MSwicmVhbG0iOiIvb3BlbmJhbmtpbmciLCJleHAiOjE1MzcwMjAyNTMsInRva2VuVHlwZSI6IkpXVFRva2VuIiwiaWF0IjoxNTM2OTMzODUzfQ.-r2dmlsV29K66qmXNCev5qBL79y3kGc7RwzhjIzxiLdBQtpIBlzJSfDDDabQtBg__8cG0LBAkDK5Y0QjPy99-g&amp;state=5b9bbfd7c181f157661a7934' -i -X GET</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -680,10 +677,10 @@ Content-Length: 246
 
 {
   "Data" : {
-    "PaymentSubmissionId" : "30f45100-1915-4e54-ab14-ecb040596098",
-    "PaymentId" : "P22182cc3-9490-4dd8-92d5-0ec19712a7e6",
+    "PaymentSubmissionId" : "8d81adf4-f424-490e-871d-4bc140fc5da7",
+    "PaymentId" : "P760c4b0d-0a6a-4025-a082-7addfcfbbb11",
     "Status" : "AcceptedSettlementInProcess",
-    "CreationDateTime" : "2018-08-26T20:58:06+02:00"
+    "CreationDateTime" : "2018-09-14T15:04:14+01:00"
   }
 }</code></pre>
 </div>
@@ -708,12 +705,35 @@ Content-Length: 246
 <h2 id="_little_exercise">Little exercise</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This app is yelling for contribution! We prepared one exercise, which should introduce you nicely to this project.
-The goal is to retrieve the PSU financial accounts and return them as json.
-You will find a few 'TODO' that will indicate you where we expect the implementation to be done.
-Submit a PR when you think you are ready and we will integrate your contribution into this sample app.
-We build this app to show you what looks like a base for a TPP application but also give you a taste on what is Open Banking.
-For some of you that are new in Open Banking, it&#8217;s probably the best way to setup your mind and see if it&#8217;s something you would like to get more involved in.</p>
+<p>The goal is to retrieve the PSU financial accounts and return them as json.</p>
+</div>
+<div class="paragraph">
+<p>There is a test for getting accounts that is highlighting missing functionality. Your aim is to implement the missing logic.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to <a href="https://github.com/ForgeRock/fr-obri-exercise/blob/master/forgerock-openbanking-excercise-tpp/src/test/java/com/forgerock/openbanking/exercise/tpp/account/AccountsApiTest.java#L21">AccountsApiTest.java</a> in your IDE.</p>
+</li>
+<li>
+<p>Remove the <code>@Ignored</code></p>
+</li>
+<li>
+<p>Run the test and it should fail</p>
+</li>
+<li>
+<p>Go to <a href="https://github.com/ForgeRock/fr-obri-exercise/blob/master/forgerock-openbanking-excercise-tpp/src/main/java/com/forgerock/openbanking/exercise/tpp/api/account/AccountsAPIController.java#L21">AccountsAPIController.java</a></p>
+</li>
+<li>
+<p>Implement the logic to get accounts.</p>
+</li>
+<li>
+<p>Run the test and check it passes</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If you get stuck or complete it raise a PR and we&#8217;ll give you some feedback!</p>
 </div>
 </div>
 </div>
@@ -730,7 +750,7 @@ Feel free to dig into it! <a href="https://www.youtube.com/playlist?list=PLotly7
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-08-26 20:57:09 CEST
+Last updated 2018-09-14 15:00:50 BST
 </div>
 </div>
 </body>
